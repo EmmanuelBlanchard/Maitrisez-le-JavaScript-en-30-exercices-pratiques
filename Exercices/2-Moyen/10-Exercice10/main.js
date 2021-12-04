@@ -2,10 +2,6 @@ const login = document.querySelector("#login");
 const motDePasse = document.querySelector("#password");
 const resultatMotDePasse = document.querySelector("#resultatPassword");
 
-console.log(login);
-console.log(motDePasse);
-console.log(resultatMotDePasse);
-
 login.addEventListener("keyup", function() {
     var regex = /^[a-z0-9._-]+@[a-z0-9._-]+.[a-z]{2,6}$/;
     if(!regex.test(login.value)) {
