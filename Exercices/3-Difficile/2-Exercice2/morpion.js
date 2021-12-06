@@ -1,9 +1,7 @@
 var readline = require('readline-sync');
 
-// var ligne1 = [0,0,0];
-// var ligne2 = [0,0,0];
-// var ligne3 = [0,0,0];
-// var tableau = [ligne1,ligne2,ligne3];
+var tour = 1;
+var fin = false;
 
 // tableau a deux dimensions
 var morpion = [
@@ -13,13 +11,23 @@ var morpion = [
 ];
 
 afficherGrille(morpion);
-console.log("-----------------------------------");
-console.log("Quelle position voulez vous ? ");
-var ligneSaisie = parseInt(readline.question("Ligne : "));
-var colonneSaisie = parseInt(readline.question("Colonne : "));
-morpion[ligneSaisie-1][colonneSaisie-1] = 1;
-afficherGrille(morpion);
 
+while(!fin) {
+    var positionOk = false;
+    while(!positionOk) {
+        console.log("-----------------------------------");
+        console.log("Quelle position voulez vous ? ");
+        var ligneSaisie = parseInt(readline.question("Ligne : "));
+        var colonneSaisie = parseInt(readline.question("Colonne : "));
+        positionOk = verificationPosition(ligneSaisie,colonneSaisie,morpion);
+        if(!positionOk) {
+            console.log("******** Choisir une position valide ********");
+        }
+    }
+    morpion[ligneSaisie-1][colonneSaisie-1] = tour;
+    (tour === 1) ? tour=2 : tour=1;
+    afficherGrille(morpion);
+}
 
 function afficherGrille(tab) {
     for(var i = 0; i < tab.length ; i++) {
@@ -36,3 +44,11 @@ function afficherGrille(tab) {
         console.log(txt);
     }
 }
+
+function verificationPosition(ligneSaisie,colonneSaisie,morpion) {
+    if(ligneSaisie >= 1 && ligneSaisie <= 3 && colonneSaisie >= 1 && colonneSaisie <= 3 && morpion[ligneSaisie-1][colonneSaisie-1] === 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
