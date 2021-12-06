@@ -5,6 +5,9 @@ const divRecapitulatif = document.querySelector("#recapitulatif");
 var chiffreSaisi = "";
 var operateur = "+";
 var recapitulatif = "";
+var resultat = 0;
+var nbCalcul = 0;
+var reinitialisation = true;
 
 divTouches.addEventListener("click", function(event) {
     var button = event.target.id;
@@ -30,15 +33,51 @@ divTouches.addEventListener("click", function(event) {
             default : 
             break;
         }
-        recapitulatif += chiffreSaisi + " " + operateur + " ";
+        if(reinitialisation) {
+            recapitulatif = "";
+            reinitialisation = false;
+        }
+        if(nbCalcul > 1 ) recapitulatif += "<br /> ";
+        recapitulatif += resultat + " " + operateur + " ";
     } else if(button === "point") {
         chiffreSaisi += ".";
     } else if(button === "Egal") {
-
+        manageOperation();
+        recapitulatif += " = " + resultat;
+        nbCalcul = 1;
+        reinitialisation = true;
     }
     divRecapitulatif.innerHTML = recapitulatif;
+    divRecapitulatif.scrollTop = divRecapitulatif.scrollHeight - divRecapitulatif.clientHeight;
 });
 
 function manageOperation() {
+    if(chiffreSaisi !== "") {
+        resultat = doOperation(operateur, resultat, parseFloat(chiffreSaisi));
+        if(nbCalcul > 0) {
+            recapitulatif += parseFloat(chiffreSaisi);
+        }
+        divResultat.value = resultat;
+        chiffreSaisi = "";
+        nbCalcul ++;
+    } else {
+        var position = recapitulatif.lastIndexOf("<br /> ");
+        recapitulatif = recapitulatif.substring(0,position);
+    }
+    
+}
 
+function doOperation(operateur, chiffreA, chiffreB) {
+    var resultatOperation = 0;
+    switch(operateur) {
+        case "+" : resultatOperation = chiffreA + chiffreB;
+        break;
+        case "-" : resultatOperation = chiffreA - chiffreB;
+        break;
+        case "/" : resultatOperation = chiffreA / chiffreB;
+        break;
+        case "*" : resultatOperation = chiffreA * chiffreB;
+        break;
+    }
+    return resultatOperation;
 }
