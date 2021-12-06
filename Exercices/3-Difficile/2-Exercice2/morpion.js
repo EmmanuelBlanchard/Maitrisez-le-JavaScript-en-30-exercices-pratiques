@@ -1,6 +1,7 @@
 var readline = require('readline-sync');
 
 var tour = 1;
+var nbCaseVide = 9;
 var fin = false;
 
 // tableau a deux dimensions
@@ -11,8 +12,7 @@ var morpion = [
 ];
 
 afficherGrille(morpion);
-
-while(!fin) {
+while(!fin && nbCaseVide > 0) {
     var positionOk = false;
     while(!positionOk) {
         console.log("-----------------------------------");
@@ -25,8 +25,16 @@ while(!fin) {
         }
     }
     morpion[ligneSaisie-1][colonneSaisie-1] = tour;
-    (tour === 1) ? tour=2 : tour=1;
     afficherGrille(morpion);
+    nbCaseVide--;
+    fin = verificationEndGame(morpion);
+    if(fin) {
+        console.log("Bravo, Joueur %d a gagné",tour);
+    }
+    (tour === 1) ? tour=2 : tour=1;    
+}
+if(nbCaseVide === 0) {
+    console.log("Pas de gagnant !");
 }
 
 function afficherGrille(tab) {
@@ -45,10 +53,21 @@ function afficherGrille(tab) {
     }
 }
 
-function verificationPosition(ligneSaisie,colonneSaisie,morpion) {
-    if(ligneSaisie >= 1 && ligneSaisie <= 3 && colonneSaisie >= 1 && colonneSaisie <= 3 && morpion[ligneSaisie-1][colonneSaisie-1] === 0) {
-        return true;
-    } else {
+function verificationPosition(ligneSaisie,colonneSaisie,tab) {
+    if(ligneSaisie <= 0 || ligneSaisie >= 4 || colonneSaisie <= 0 || colonneSaisie >= 4) {
         return false;
     }
+    if(tab[ligneSaisie-1][colonneSaisie-1] === 0) {
+        return true;
+    }
 };
+
+function verificationEndGame(tab) {
+    for(var i = 0; i < tab.length ; i++) {
+        if(tab[i][0] === tab[i][1] && tab[i][0] === tab[i][2] && tab[i][0] !== 0) return true;
+        if(tab[0][i] === tab[1][i] && tab[0][i] === tab[2][i] && tab[0][i] !== 0) return true;
+    }
+    if(tab[0][0] === tab[1][1] && tab[0][0] === tab[2][2] && tab[0][0] !== 0) return true;
+    if(tab[0][2] === tab[1][1] && tab[0][2] === tab[2][0] && tab[0][2] !== 0) return true;
+    return false;
+}
