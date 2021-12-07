@@ -15,7 +15,7 @@ while(choixMenu !== 0) {
             armeManager.ajouterArme();
         break;
         case 3 : // Supprimer une arme
-            armeManager.supprimer();
+            armeManager.supprimerArme();
         break;
         case 0 : console.log("A +");
         break;
