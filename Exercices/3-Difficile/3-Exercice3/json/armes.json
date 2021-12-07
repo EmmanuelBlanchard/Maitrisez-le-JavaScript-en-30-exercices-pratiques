@@ -1,0 +1,10 @@
+{
+    "arme1" : {
+        "nom" : "couteau",
+        "type" : 1
+    },
+    "arme2" : {
+        "nom" : "AK47",
+        "type" : 3
+    }
+}
